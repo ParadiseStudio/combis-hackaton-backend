@@ -28,11 +28,15 @@ router.post('/login', function (req, res, next) {
         if (err) { return res.send({ success: false, message: err + 'hi!'}); }
         if (isMatch && !err) {
           // Create token if the password matched and no error was thrown
-          console.log(user) 
           var token = jwt.sign(user.toJSON(), config.jwtsecret, {
             expiresIn: 10080 // in seconds
           });
-          return res.json({ success: true, token: 'JWT ' + token, user: user });
+
+          user=user.toObject()
+          user.token = 'JWT ' + token
+          user.password = undefined
+
+          return res.json({ success: true, user: user });
         } else {
           return res.send({ success: false, message: 'Authentication failed. Passwords did not match.' });
         }
