@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const config = require("../config/general");
-const DonationSchema = require("./donation").schema;
+const DonationSchema = require("./donation/schema");
+const Donation = require("./donation/model");
 
 
 const DonatorSchema = new mongoose.Schema({
@@ -36,14 +37,14 @@ const DonatorSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.String,
         match: [/^\S+@\S+\.\S+/, "email is not valid"],
         trim: true,
-        required:false,
+        required: false,
         unique: false,
     },
 }, { timestamps: true });
 
 
 
-DonationSchema.pre('save',
+DonatorSchema.pre('save',
     function (next) {
         if (this.isModified('password') || this.isNew) {
             bcrypt.genSalt(10).then(
@@ -58,14 +59,29 @@ DonationSchema.pre('save',
                 },
                 err => next(err)
             )
-  
+
         } else {
             return next()
         }
     })
 
+DonatorSchema.methods.justDonated =  function () {
+    let newDonation = new Donation({});
+    newDonation.save(
+        err => {
+            if (err) {
+                return res.status(HttpStatus.IM_A_TEAPOT).json({ err })
+            }
+        })
+       newDonation.date = new Date();
 
+    if (this.donations !== undefined) {
+        this.donations.push(newDonation)
+    } else {
+        this.donations = [newDonation] 
+    }
+
+}
 module.exports = mongoose.model("Donator", DonatorSchema);
 
 
- 
