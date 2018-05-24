@@ -47,7 +47,7 @@ router.get('/all', function (req, res, next) {
     Donator.find({}, function (err, donators) {
         res.send(donators.reduce(function (donatorMap, item) {
             donatorMap[item.id] = item;
-            return donatorMap;
+            return {donators: donatorMap};
         }, {}));
     });
 })

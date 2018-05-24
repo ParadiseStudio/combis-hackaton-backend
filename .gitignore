@@ -4,3 +4,4 @@ update-server
 .update-server.swp
 push.sh
 algorithm
+private_key
