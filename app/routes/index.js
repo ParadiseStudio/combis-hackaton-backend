@@ -3,8 +3,7 @@ const router = express.Router();
 const config = require('./../config/general');
 const HttpStatus = require('http-status-codes')
 
-/* GET home page. */
-router.get('/sendPushNotification', function(req, res, next) {
+router.post('/sendPushNotification', function(req, res, next) {
 
 
 
@@ -27,7 +26,7 @@ router.get('/sendPushNotification', function(req, res, next) {
   note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
   note.badge = 3;
   note.sound = "ping.aiff";
-  note.alert = "\uD83D\uDCE7 \u2709 You have a new message";
+  note.alert = "\uD83D\uDCE7 \u2709 Poziv na donaciju krvi.";
   note.payload = { 'messageFrom': 'Comibs Hackaton' };
   note.topic = "com.morselinteractive.PushNotification"
   
