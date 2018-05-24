@@ -9,7 +9,10 @@ const mongo = {
 const config = {
     mongo: mongo,
     jwtsecret: process.env.JWT_SECRET,
-    database: 'mongodb://' + mongo.user + ':' + mongo.pass +'@'+ mongo.networkAlias + ':27017/' + mongo.dbName+'?authSource=admin'
+    database: 'mongodb://' + mongo.user + ':' + mongo.pass +'@'+ mongo.networkAlias + ':27017/' + mongo.dbName+'?authSource=admin',
+    apiKey: process.env.SMS_API_KEY,
+    apiSecret: process.env.SMS_API_SECRET,
+    virtualNumber: process.env.SMS_VIRTUAL_NUMBER,
 }
 
 module.exports = config

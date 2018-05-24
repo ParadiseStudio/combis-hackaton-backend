@@ -23,6 +23,7 @@ const DonatorSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.String,
         trim: true
     },
+    location : { type: [Number], index: '2dsphere', formType: String},
 
     sex: { type: mongoose.Schema.Types.String, enum: ["M", "F"] },
 

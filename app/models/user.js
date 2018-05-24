@@ -18,6 +18,7 @@ const UserSchema = new mongoose.Schema({
         required: [true, "email is required"],
         unique: true,
     },
+    location : { type: [Number], index: '2dsphere'},
     password: { type: mongoose.Schema.Types.String, required: true }
 }, { timestamps: true });
 

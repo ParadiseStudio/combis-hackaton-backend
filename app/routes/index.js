@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-
+const config = require('./../config/general');
+const HttpStatus = require('http-status-codes')
 
 /* GET home page. */
-router.get('/sendPushNoti', function(req, res, next) {
+router.get('/sendPushNotification', function(req, res, next) {
 
 
 
@@ -27,7 +28,7 @@ router.get('/sendPushNoti', function(req, res, next) {
   note.badge = 3;
   note.sound = "ping.aiff";
   note.alert = "\uD83D\uDCE7 \u2709 You have a new message";
-  note.payload = { 'messageFrom': 'John Appleseed' };
+  note.payload = { 'messageFrom': 'Comibs Hackaton' };
   note.topic = "com.morselinteractive.PushNotification"
   
   apnProvider.send(note, deviceToken).then((result) => {
@@ -39,4 +40,25 @@ router.get('/sendPushNoti', function(req, res, next) {
   res.json({greeting:"hola boys"});
 });
 
+
+router.get('/sendSMS', function(req, res, next) {
+  const Nexmo = require('nexmo');
+  const nexmo = new Nexmo({
+    apiKey: config.apiKey,
+    apiSecret: config.apiSecret
+  });
+
+
+nexmo.message.sendSms(
+  config.virtualNumber, '+385993409697', 'Odazovite se na dobrovoljno darovanje krvi!',
+    (err, responseData) => {
+      if (err) {
+        return res.status(HttpStatus.NOT_FOUND).json(err);
+      } else {
+        return res.json(responseData);
+      }
+    }
+ );
+
+})
 module.exports = router;

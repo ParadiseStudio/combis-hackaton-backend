@@ -1,5 +1,4 @@
 node_modules
-.env
 update-server
 .update-server.swp
 push.sh

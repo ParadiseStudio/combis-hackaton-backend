@@ -33,12 +33,17 @@ router.post('/new', function (req, res, next) {
     //     "updatedAt": ISODate("2018-05-23T21:58:20.919Z"),
     //     "__v": 0
     // }
-
+    req.body.location = JSON.parse(req.body.location)
     newDonator = new Donator(req.body);
 
-    newDonator.save();
+    newDonator.save((err) => {
+        if (err || req.body.lenght == 0)
+            return res.json(err);
+        return res.json(newDonator);
 
-    res.json({ greeting: "holas" });
+
+    });
+
 });
 
 
@@ -47,7 +52,7 @@ router.get('/all', function (req, res, next) {
     Donator.find({}, function (err, donators) {
         res.send(donators.reduce(function (donatorMap, item) {
             donatorMap[item.id] = item;
-            return {donators: donatorMap};
+            return { donators: donatorMap };
         }, {}));
     });
 })
@@ -70,9 +75,9 @@ router.get('/just-donated/:id', function (req, res, next) {
         if (err) {
             return res.status(HttpStatus.NOT_FOUND).json({ success: false, err: "User not found or an incorrect ID was provided" });
         }
-        
-         donator.justDonated()
-         donator.save()
+
+        donator.justDonated()
+        donator.save()
 
         return res.json({ donator: donator.toJSON() });
     })
